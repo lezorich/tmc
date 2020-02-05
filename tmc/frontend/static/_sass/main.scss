@@ -1,0 +1,18 @@
+@import "../../../../node_modules/bulma/bulma";
+
+.form-container {
+    background: #fff;
+    border-radius: 20px;
+    padding: 60px 40px 60px 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.flatpickr-input {
+    font-size: $body-size;
+}
+
+.hide {
+    display: none;
+}

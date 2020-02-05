@@ -1,0 +1,23 @@
+{
+  "name": "cumplo-challenge",
+  "version": "1.0.0",
+  "description": "If not a valid key is provided, a 403 status code is returned.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "css-build": "node-sass -o ./tmc/frontend/static/frontend/css tmc/frontend/static/_sass"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bulma": "^0.8.0",
+    "node-sass": "^4.13.1",
+    "postcss": "^7.0.26"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^1.19.1"
+  }
+}

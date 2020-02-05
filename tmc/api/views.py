@@ -20,7 +20,19 @@ class TMCView(APIView):
         """
         Return the TMC of a specific date from the SBIF.
         """
-        serializer = serializers.TMCSerializer(data=request.data)
+        data = {
+            "credit_amount_uf": request.query_params.get(
+                "credit-amount-uf", ""
+            ),
+            "credit_term_days": request.query_params.get(
+                "credit-term-days", ""
+            ),
+            "valid_at": request.query_params.get("valid-at", ""),
+            "operation_type": request.query_params.get(
+                "operation_type", "non_adjustable"
+            ),
+        }
+        serializer = serializers.TMCSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
         try:

@@ -7,6 +7,12 @@ logger = logging.getLogger(__name__)
 
 TMC_SBIF_URL = "https://sbif.cl/sbifweb/servlet/InfoFinanciera"
 
+SBIF_TMC_OPERATION_TYPES = ["adjustable", "non_adjustable"]
+
+
+class ExternalServiceError(Exception):
+    pass
+
 
 def get_sbif_tmc(
     credit_amount_uf,
@@ -14,7 +20,6 @@ def get_sbif_tmc(
     valid_at,
     operation_type="non_adjustable",
 ):
-    """Date format: dd/mm/yyyy"""
     tmc_row_idx = _map_credit_to_tmc_row(
         credit_amount_uf, credit_term_days, operation_type
     )
@@ -64,14 +69,16 @@ def _get_sbif_html(valid_at):
     params = {"indice": "4.2.1", "FECHA": valid_at}
     try:
         req = requests.get(TMC_SBIF_URL, params=params)
-    except requests.exceptions.RequestException as err:
+    except requests.exceptions.RequestException:
         logger.error(
             "GET request with params %s to %s failed",
             str(params),
             TMC_SBIF_URL,
             exc_info=True,
         )
-        # TODO(lukas): Raise application exception with a nice error code.
+        raise ExternalServiceError(
+            "Failed to access SBIF website. See logs for more details."
+        )
     return req.content
 
 

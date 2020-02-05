@@ -2,6 +2,8 @@ import datetime
 
 from rest_framework import serializers
 
+from api.services import SBIF_TMC_OPERATION_TYPES
+
 
 class TMCSerializer(serializers.Serializer):
     credit_amount_uf = serializers.DecimalField(
@@ -19,6 +21,16 @@ class TMCSerializer(serializers.Serializer):
             datetime.datetime.strptime(value, "%d/%m/%Y")
         except ValueError:
             raise serializers.ValidationError(
-                "valid_at field 'hola' does not match format '%d/%m/%Y'"
+                "valid_at field '{}' does not match format '%d/%m/%Y'".format(
+                    value
+                )
+            )
+        return value
+
+    def validate_operation_type(self, value):
+        value = value.lower().strip()
+        if value not in SBIF_TMC_OPERATION_TYPES:
+            raise serializers.ValidationError(
+                "'{}' is not a valid operation type".format(value)
             )
         return value

@@ -1,3 +1,4 @@
+import decimal
 import logging
 
 import requests
@@ -30,7 +31,7 @@ def _scrape_tmc_from_sbif(tmc_idx, valid_at):
     tree = html.fromstring(_get_sbif_html(valid_at))
     tmc_table = tree.xpath("//*[@id='contenido']/div[1]/table")[0]
     tmc_rows = tmc_table.findall("tr")
-    return _get_tmc_of_row(tmc_rows[tmc_idx])
+    return decimal.Decimal(_get_tmc_of_row(tmc_rows[tmc_idx]))
 
 
 def _map_credit_to_tmc_row(credit_amount_uf, credit_term_days, operation_type):

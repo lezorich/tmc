@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+import dj_database_url
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -79,13 +81,10 @@ WSGI_APPLICATION = "tmc.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-    }
-}
+if "DATABASE_URL" not in os.environ:
+    sqlite_path = os.path.join(BASE_DIR, "db.sqlite3")
+    os.environ["DATABASE_URL"] = "sqlite:///{}".format(sqlite_path)
+DATABASES = {"default": dj_database_url.config(conn_max_age=600)}
 
 
 # Password validation

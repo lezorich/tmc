@@ -16,7 +16,6 @@ form.addEventListener('submit', e => {
   e.preventDefault();
   form.hidden = true;
   calculatingTmcState();
-  console.log(getFormData());
   params = getFormData();
   getTmc(params);
 });
@@ -26,7 +25,10 @@ goBackButton.onclick = () => {
 };
 
 function getFormData() {
-  const elements = [...form.elements];
+  let elements = [...form.elements];
+  elements = elements.filter(elem => {
+    return elem.type !== 'radio' || (elem.type === 'radio' && elem.checked);
+  });
   return new Map(elements.map(elem => [elem.name, elem.value]));
 }
 
@@ -51,7 +53,8 @@ function getTmc(params) {
   url_params = `credit-amount-uf=${params.get('credit-amount-uf')}&`;
   url_params =
     url_params + `credit-term-days=${params.get('credit-term-days')}&`;
-  url_params = url_params + `valid-at=${params.get('valid-at')}`;
+  url_params = url_params + `valid-at=${params.get('valid-at')}&`;
+  url_params = url_params + `operation-type=${params.get('operation-type')}`;
   fetch(`/api/v1/tmc/?${url_params}`, {
     headers: {
       'Content-Type': 'application/json',

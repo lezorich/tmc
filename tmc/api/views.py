@@ -29,7 +29,7 @@ class TMCView(APIView):
             ),
             "valid_at": request.query_params.get("valid-at", ""),
             "operation_type": request.query_params.get(
-                "operation_type", "non_adjustable"
+                "operation-type", "non_adjustable"
             ),
         }
         serializer = serializers.TMCSerializer(data=data)
